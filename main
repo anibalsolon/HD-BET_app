@@ -1,0 +1,16 @@
+#!/bin/bash
+#PBS -l nodes=1:ppn=8,walltime=96:00:00
+#PBS -l vmem=20gb
+#PBS -N hdbet
+
+set -x
+
+export input=$(jq -r .input config.json)
+
+singularity exec -e docker://brainlife/fsl:5.0.9 hd-bet -i $input -o masked.nii.gz -device cpu -mode fast -tta 0 --save_mask --overwrite_existing
+
+mkdir -p mask
+cp masked_mask.nii.gz mask/mask.nii.gz
+
+
+hd-bet
