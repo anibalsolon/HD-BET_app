@@ -8,5 +8,5 @@ export input=$(jq -r .t1 config.json)
 
 singularity exec -e docker://anibalsolon/hd-bet:latest hd-bet -i $input -o masked.nii.gz -device cpu -mode fast -tta 0
 
-mkdir -p mask
-cp masked_mask.nii.gz mask/mask.nii.gz
+mkdir -p output
+cp masked_mask.nii.gz output/t1.nii.gz
