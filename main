@@ -10,6 +10,3 @@ singularity exec -e docker://anibalsolon/hd-bet:0.0.1 hd-bet -i $input -o masked
 
 mkdir -p mask
 cp masked_mask.nii.gz mask/mask.nii.gz
-
-
-hd-bet
