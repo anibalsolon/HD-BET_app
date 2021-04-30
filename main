@@ -7,10 +7,19 @@ set -e
 
 input=$(jq -r .t1 config.json)
 
-singularity run --nv -e docker://anibalsolon/hd-bet:v0.0.1 hd-bet \
+#pick cpu v.s. nvidia gpu
+device=cpu
+nvopts=""
+if hash nvidia-smi; then
+    #TODO - pick an appropriate device instead of 0
+    device=0 
+    nvopts="--nv"
+fi
+
+time singularity run $nvopts -e docker://anibalsolon/hd-bet:v0.0.1 hd-bet \
     -i $input \
     -o masked.nii.gz \
-    -device cpu \
+    -device $device \
     -mode fast \
     -tta 0
 
