@@ -10,10 +10,16 @@ input=$(jq -r .t1 config.json)
 #pick cpu v.s. nvidia gpu
 device=cpu
 nvopts=""
+
+# Check if nvidia is installed
 if hash nvidia-smi; then
-    #TODO - pick an appropriate device instead of 0
-    device=0 
-    nvopts="--nv"
+    # Check if everything is correctly loaded
+    nvidia-smi &> /dev/null
+    if [ $? == 0 ]; then
+        #TODO - pick an appropriate device instead of 0
+        device=0 
+        nvopts="--nv"
+    fi
 fi
 
 time singularity run $nvopts -e docker://anibalsolon/hd-bet:v0.0.1 hd-bet \
