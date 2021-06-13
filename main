@@ -6,6 +6,13 @@ set -x
 # set -e
 
 input=$(jq -r .t1 config.json)
+tta=$(jq -r .tta config.json)
+mode=$(jq -r .mode config.json)
+
+case "$tta" in
+ true) tta=1 ;;
+ *) tta=0 ;;
+esac
 
 #pick cpu v.s. nvidia gpu
 device=cpu
@@ -26,8 +33,8 @@ time singularity run $nvopts -e docker://anibalsolon/hd-bet:v0.0.1 hd-bet \
     -i $input \
     -o masked.nii.gz \
     -device $device \
-    -mode fast \
-    -tta 0
+    -mode $mode \
+    -tta $tta
 
 mkdir -p mask
 cp masked_mask.nii.gz mask/t1.nii.gz
